@@ -1,6 +1,4 @@
-import matplotlib.pyplot as plt
 import numpy as np
-import scipy.integrate as integrate
 
 matriz_a = np.array([[3, 7, 1, 4], [3, 1, 2, 8], [9, 8, 4, 5], [5, 6, 7, 1]])
 
