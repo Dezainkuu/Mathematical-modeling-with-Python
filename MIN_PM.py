@@ -1,6 +1,26 @@
-import matplotlib.pyplot as plt
+from scipy.integrate import quad
 import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
 
+def plotf(X,Y,Xlbl,Ylbl,Ttl,c,lbl):
+    #.Donde:
+    #.     X   : datos de abcisas
+    #.     Y   : datos de ordenadas
+    #.     Xlbl: etiqueta del eje X
+    #.     Ylbl: etiqueta del eje Y
+    #.     Ttl : titulo del grafico
+    #.     c   : color de la traza
+    #.     lbl : etiqueta de los datos
+    plt.xlabel(Xlbl); plt.ylabel(Ylbl); plt.title(Ttl)
+    plt.plot(X,Y,c,label=lbl)
+    # Grilla mayor
+    plt.grid(which='major', color='#666666', linestyle='-')
+    # Grilla menor
+    plt.minorticks_on()
+    plt.grid(which='minor', color='#999999', linestyle='-', alpha=0.2)
+    plt.legend()
+    return
 
 def fun1(x):
     f = np.cos(4*x) * np.cos (3 * np.sin(x))
@@ -19,8 +39,10 @@ def trapezoidal (a, b, n):
     h = (b - a)/n
     x = np.linspace (a, b, n+1) 
     y = fun1 (x)
-    S = y[0] + 2*np.sum(y[2:n-1]) + y[n]
+    S = y[0] + 2*np.sum(y[1:n]) + y[n]
     I_trpz = 0.5*h*S
+    plotf(x, y, 't [s]', 'F3(t) [N]', 'F3(t)', 'g', 'F3(t)')
+    plt.show()
     return I_trpz
 
 
@@ -44,5 +66,24 @@ def simpson13(a, b, n): # El método requiere estrictamente un número par de in
     I_simpson = (h / 3) * S
     return I_simpson
 
+#print ("método de integración por trapecio;:", trapezoidal(0, np.pi, 100))
+#print ("método de integración por punto medio;:", punto_medio(0, np.pi, 100))
+#print ("método de integración por Simpson 1/3;:", simpson13(0, np.pi, 100))
 
-
+if __name__ == "__main__":
+    # Parámetros de la integral (para ajustar a, b y n según la consigna)
+    a, b, n = 0.0, np.pi, 100
+ 
+    valor_exacto = 0.414798
+ 
+    resultados = {
+        "Punto medio": punto_medio(a, b, n),
+        "Trapezoidal": trapezoidal(a, b, n),
+        "Simpson 1/3": simpson13(a, b, n),
+        "Valor exacto": valor_exacto
+    }
+ 
+    tabla = pd.DataFrame(resultados.items(), columns=["Método", "Valor"])
+    print(f"Intervalo [a,b] = [{a}, {b}]   n = {n}\n")
+    print(tabla.to_string(index=False, float_format='%.10f'))
+    
