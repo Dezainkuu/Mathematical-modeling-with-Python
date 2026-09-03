@@ -22,9 +22,13 @@ def plotf(X,Y,Xlbl,Ylbl,Ttl,c,lbl):
     plt.legend()
     return
 
+#FUNCIÓN A CALCULAR ----------------------------------------------------    
 def fun1(x):
-    f = np.cos(4*x) * np.cos (3 * np.sin(x))
+    #f = np.cos(4*x) * np.cos (3 * np.sin(x))
+    #f = np.sqrt(4-x**2)/(5-x**2)
+    f = x*np.sin(x)
     return f
+#------------------------------------------------------------------------
 
 #método de integración por punto medio
 def punto_medio (a, b, n):
@@ -41,7 +45,7 @@ def trapezoidal (a, b, n):
     y = fun1 (x)
     S = y[0] + 2*np.sum(y[1:n]) + y[n]
     I_trpz = 0.5*h*S
-    plotf(x, y, 't [s]', 'F3(t) [N]', 'F3(t)', 'g', 'F3(t)')
+    plotf(x, y, 'x', 'F1(x)', 'F1', 'g', 'F1')
     plt.show()
     return I_trpz
 
@@ -71,19 +75,24 @@ def simpson13(a, b, n): # El método requiere estrictamente un número par de in
 #print ("método de integración por Simpson 1/3;:", simpson13(0, np.pi, 100))
 
 if __name__ == "__main__":
-    # Parámetros de la integral (para ajustar a, b y n según la consigna)
-    a, b, n = 0.0, np.pi, 100
- 
-    valor_exacto = 0.414798
- 
+    
+    # Parámetros de la integral----------------------------------------------
+    a, b, n = 0, np.pi, 100
+    valor_exacto = 3.14159265
+    #------------------------------------------------------------------------
+
     resultados = {
         "Punto medio": punto_medio(a, b, n),
         "Trapezoidal": trapezoidal(a, b, n),
         "Simpson 1/3": simpson13(a, b, n),
         "Valor exacto": valor_exacto
     }
- 
+
     tabla = pd.DataFrame(resultados.items(), columns=["Método", "Valor"])
-    print(f"Intervalo [a,b] = [{a}, {b}]   n = {n}\n")
-    print(tabla.to_string(index=False, float_format='%.10f'))
+
+    # Calcular error porcentual respecto al valor exacto
+    tabla["Error (%)"] = (abs(tabla["Valor"] - valor_exacto) / abs(valor_exacto) * 100)
     
+    tabla.loc[tabla["Método"] == "Valor exacto", "Error (%)"] = 0 # Si el valor exacto no tiene error
+    print("\n", f"Intervalo [a,b] = [{a}, {b}]   n = {n}\n")
+    print("-" * 55, "\n", tabla.to_string(index=False, float_format="%.6f", col_space=18),"\n", "-" * 55)
