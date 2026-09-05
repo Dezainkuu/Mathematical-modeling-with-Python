@@ -1,4 +1,24 @@
 import pandas as pd
+import matplotlib.pyplot as plt
+
+def plotf(X,Y,Xlbl,Ylbl,Ttl,c,lbl):
+    #.Donde:
+    #.     X   : datos de abcisas
+    #.     Y   : datos de ordenadas
+    #.     Xlbl: etiqueta del eje X
+    #.     Ylbl: etiqueta del eje Y
+    #.     Ttl : titulo del grafico
+    #.     c   : color de la traza
+    #.     lbl : etiqueta de los datos
+    plt.xlabel(Xlbl); plt.ylabel(Ylbl); plt.title(Ttl)
+    plt.plot(X,Y,c,label=lbl)
+    # Grilla mayor
+    plt.grid(which='major', color='#666666', linestyle='-')
+    # Grilla menor
+    plt.minorticks_on()
+    plt.grid(which='minor', color='#999999', linestyle='-', alpha=0.2)
+    plt.legend()
+    return
 
 # Datos del problema
 x = [1.00, 1.10, 1.20, 1.30, 1.40, 1.50, 1.60, 1.70, 1.80, 1.90, 2.00]
@@ -22,3 +42,4 @@ resultados = {
 tabla = pd.DataFrame(resultados) #Creación del DataFrame de Pandas
 tabla["Error (%)"] = abs(tabla["Valor"] - exact) / exact * 100 #Cálculo del error porcentual (%)
 print("-" * 55, "\n", tabla.to_string(index=False, float_format="%.6f", col_space=18), "\n", "-" * 55, "\n") #Presentación del DataFrame
+plotf(x, y, 'X', 'f(x)', "Función f(x)", 'r', "f(x)"), plt.show()
