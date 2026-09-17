@@ -1,3 +1,4 @@
+"""
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.integrate import solve_ivp
@@ -6,7 +7,7 @@ from scipy.integrate import solve_ivp
 m1, m2 = 1, 2
 k1, k2 = 3, 1
 c1, c2 = 0.5, 0.2
-"""
+
 def fun(Y0, t):
     y1, y1p, y2, y2p = Y0
     y1pp = (1/m1)*(-(c1+c2)*y1p - (k1+k2)*y1 + c2*y2p + k2*y2)
@@ -27,7 +28,15 @@ f = w/(2*np.pi)
 print('Frecuencias naturales:', f, 'Hz')
 """
 
-def fun(t, Y0):                  # <- mismo cambio de orden
+import numpy as np
+from scipy.integrate import solve_ivp
+import matplotlib.pyplot as plt
+
+m1, m2 = 1, 2
+k1, k2 = 3, 1
+c1, c2 = 0.5, 0.2
+
+def fun(t, Y0):
     y1, y1p, y2, y2p = Y0
     y1pp = (1/m1)*(-(c1+c2)*y1p - (k1+k2)*y1 + c2*y2p + k2*y2)
     y2pp = (1/m2)*(-c2*y2p - k2*y2 + c2*y1p + k2*y1)
@@ -36,7 +45,10 @@ def fun(t, Y0):                  # <- mismo cambio de orden
 t_eval = np.arange(0, 50, 0.01)
 sol = solve_ivp(fun, [0, 50], [0.1, 0, 0, 0], t_eval=t_eval)
 
-y1 = sol.y[0]
-y2 = sol.y[2]
-plt.plot(sol.t, y1, label='y1')
-plt.plot(sol.t, y2, label='y2')
+fig, (ax1, ax2) = plt.subplots(2, 1, sharex=True)
+fig.suptitle('Sistema 2 masas (acoplamiento directo)')
+ax1.plot(sol.t, sol.y[0], label='y1'); ax1.plot(sol.t, sol.y[2], label='y2')
+ax1.set_ylabel('posición [m]'); ax1.legend()
+ax2.plot(sol.t, sol.y[1], label='y1p'); ax2.plot(sol.t, sol.y[3], label='y2p')
+ax2.set_ylabel('velocidad [m/s]'); ax2.set_xlabel('t [s]'); ax2.legend()
+plt.show()
