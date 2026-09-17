@@ -29,7 +29,7 @@ w_f = 0.2
 def f(t):
     return 0.05*np.cos(w_f*t)
 
-def sistema(t, X0): 
+def sistema(t, X0):
     x1, x2 = X0
     x1p = x2
     x2p = (1/m)*(f(t) - (c1+c2)*x2 - (k1+k2)*x1)
@@ -38,6 +38,8 @@ def sistema(t, X0):
 t_eval = np.arange(0, 50, 0.01)
 sol = solve_ivp(sistema, [0, 50], [0.1, 0], t_eval=t_eval)
 
-x = sol.y[0]      # posición
-v = sol.y[1]      # velocidad
-plt.plot(sol.t, x)
+fig, (ax1, ax2) = plt.subplots(2, 1, sharex=True)
+fig.suptitle('Sistema 1 GDL')
+ax1.plot(sol.t, sol.y[0]); ax1.set_ylabel('x [m]')
+ax2.plot(sol.t, sol.y[1]); ax2.set_ylabel('v [m/s]'); ax2.set_xlabel('t [s]')
+plt.show()
