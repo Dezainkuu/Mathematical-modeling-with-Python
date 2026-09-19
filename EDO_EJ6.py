@@ -24,7 +24,7 @@ from scipy.integrate import solve_ivp
 import matplotlib.pyplot as plt
 
 m, k1, k2, c1, c2 = 1, 1, 3, 0.5, 0.3
-w_f = 0.2
+w_f = 2
 
 def f(t):
     return 0.05*np.cos(w_f*t)
