@@ -19,4 +19,3 @@ for i in range(3):
     phi[1] *= r                                # convierte theta a r*theta
     phi = phi/np.max(np.abs(phi))
     print(f"{i+1}    | {f[i]:.4f}          | {phi[0]:.3f} | {phi[1]:.3f}    | {phi[2]:.3f}")
-
