@@ -1,8 +1,10 @@
 import numpy as np
 
+#Parámetros
 m1, m2, J, r = 2, 1, 0.02, 0.1
 k1, k2, k3 = 1, 2, 1
 
+#Matrices
 K = np.array([[k1+k2, -k2*r, 0],
               [-k2*r, r**2*(k2+k3), -k3*r],
               [0, -k3*r, k3]])
