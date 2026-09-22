@@ -25,8 +25,8 @@ def plotf(X,Y,Xlbl,Ylbl,Ttl,c,lbl):
 #FUNCIÓN A CALCULAR ----------------------------------------------------    
 def fun1(x):
     #f = np.cos(4*x) * np.cos (3 * np.sin(x))
-    #f = np.sqrt(4-x**2)/(5-x**2)
-    f = x*np.sin(x)
+    f = np.sqrt(4-x**2)/(5-x**2)
+    #f = x*np.sin(x)
     return f
 #------------------------------------------------------------------------
 
@@ -77,8 +77,8 @@ def simpson13(a, b, n): # El método requiere estrictamente un número par de in
 if __name__ == "__main__":
     
     # Parámetros de la integral----------------------------------------------
-    a, b, n = 0, np.pi, 100
-    valor_exacto = 3.14159265
+    a, b, n = 1, 2, 10
+    valor_exacto = 0.457718
     #------------------------------------------------------------------------
 
     resultados = {
