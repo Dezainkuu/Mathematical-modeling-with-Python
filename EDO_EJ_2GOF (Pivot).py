@@ -20,3 +20,20 @@ params = dict(
     k2=150.0, c2=6.0,
     L1=0.4, L2=0.6,
 )
+
+def f_ext(t):
+    """Fuerza/torque externo (0 en este caso base; agregar si el enunciado lo pide)."""
+    return 0.0
+ 
+# ===========================================================================
+# 2) FUERZAS EN A Y B (checklist propio-vecino; aca el "vecino" es tierra=0)
+# ===========================================================================
+def fuerzas(y, yp, theta, thetap, p):
+    yA  = y  + p['L1']*theta
+    yAp = yp + p['L1']*thetap
+    yB  = y  - p['L2']*theta
+    yBp = yp - p['L2']*thetap
+ 
+    F1 = p['k1']*yA + p['c1']*yAp   # rama en A, a tierra
+    F2 = p['k2']*yB + p['c2']*yBp   # rama en B, a tierra
+    return F1, F2
