@@ -37,3 +37,14 @@ def fuerzas(y, yp, theta, thetap, p):
     F1 = p['k1']*yA + p['c1']*yAp   # rama en A, a tierra
     F2 = p['k2']*yB + p['c2']*yBp   # rama en B, a tierra
     return F1, F2
+
+# ===========================================================================
+# 3) NEWTON: traslacion del CM y rotacion respecto al pivote
+# ===========================================================================
+def sistema(t, X, p):
+    y, yp, theta, thetap = X
+    F1, F2 = fuerzas(y, yp, theta, thetap, p)
+ 
+    ypp     = (1/p['m']) * (-F1 - F2)
+    thetapp = (1/p['J']) * (-F1*p['L1'] + F2*p['L2'])
+    return [yp, ypp, thetap, thetapp]
