@@ -72,3 +72,31 @@ axs[1,0].plot(t, theta, 'tab:green');   axs[1,0].set_ylabel('theta [rad]'); axs[
 axs[1,1].plot(t, thetap, 'tab:red');    axs[1,1].set_ylabel('thetap [rad/s]'); axs[1,1].set_xlabel('t [s]')
 plt.tight_layout()
 plt.show()
+
+# ===========================================================================
+# 6) MODOS PROPIOS (orden de coordenadas: y, theta)
+# ===========================================================================
+def matrices_MK(p):
+    k1,k2,L1,L2 = p['k1'],p['k2'],p['L1'],p['L2']
+    M = np.diag([p['m'], p['J']])
+    K = np.array([
+        [k1+k2,          k1*L1 - k2*L2],
+        [k1*L1 - k2*L2,  k1*L1**2 + k2*L2**2],
+    ])
+    return M, K
+ 
+M, K = matrices_MK(params)
+vals, vecs = np.linalg.eig(K @ np.linalg.inv(M))
+idx = np.argsort(vals)
+w = np.sqrt(vals[idx]); f_hz = w/(2*np.pi); vecs = vecs[:, idx]
+ 
+print("Frecuencias naturales:")
+for i in range(2):
+    print(f"  Modo {i+1}: {f_hz[i]:.4f} Hz ({w[i]:.4f} rad/s)")
+ 
+print("\nFormas modales normalizadas (y, theta):")
+for i in range(2):
+    phi = np.linalg.inv(M) @ vecs[:,i]
+    phi = phi/np.max(np.abs(phi))
+    print(f"  Modo {i+1}: y={phi[0]:.3f}  theta={phi[1]:.3f}")
+ 
