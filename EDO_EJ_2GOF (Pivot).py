@@ -48,3 +48,27 @@ def sistema(t, X, p):
     ypp     = (1/p['m']) * (-F1 - F2)
     thetapp = (1/p['J']) * (-F1*p['L1'] + F2*p['L2'])
     return [yp, ypp, thetap, thetapp]
+
+# ===========================================================================
+# 4) SIMULACION
+# ===========================================================================
+X0 = [0.05, 0, 0.05, 0]   # y(0)=0.05 m, theta(0)=0.05 rad, resto en 0
+tmax, dt = 20, 0.01
+t_eval = np.linspace(0, tmax, int(tmax/dt) + 1)
+ 
+sol = solve_ivp(sistema, [0, tmax], X0, args=(params,), t_eval=t_eval, method='RK45')
+t = sol.t
+y, yp, theta, thetap = sol.y
+ 
+# ===========================================================================
+# 5) GRAFICOS: posicion/rotacion y velocidad de cada GDL
+# ===========================================================================
+fig, axs = plt.subplots(2, 2, figsize=(10, 6), sharex=True)
+fig.suptitle('Barra 2 GDL — posicion/rotacion y velocidad')
+ 
+axs[0,0].plot(t, y);       axs[0,0].set_ylabel('y [m]');          axs[0,0].set_title('Posicion / Rotacion')
+axs[0,1].plot(t, yp, 'tab:orange');     axs[0,1].set_ylabel("y' [m/s]"); axs[0,1].set_title('Velocidad')
+axs[1,0].plot(t, theta, 'tab:green');   axs[1,0].set_ylabel('theta [rad]'); axs[1,0].set_xlabel('t [s]')
+axs[1,1].plot(t, thetap, 'tab:red');    axs[1,1].set_ylabel('thetap [rad/s]'); axs[1,1].set_xlabel('t [s]')
+plt.tight_layout()
+plt.show()
